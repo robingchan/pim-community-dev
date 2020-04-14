@@ -21,3 +21,10 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.association.save_two_way_product_model_associations:
+        class: Akeneo\Pim\Enrichment\Component\Product\Association\SaveTwoWayProductModelAssociations
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
