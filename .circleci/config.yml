@@ -7,9 +7,7 @@ jobs:
       - checkout # let CIRCLE CI configure SSH keys and directories
       - run:
           name: Empty project directory
-          command: |
-            pwd
-            rm /root/project/*
+          command: rm /home/circleci/*
       - run:
           name: Download EE dev
           command: git clone git@github.com:akeneo/pim-enterprise-dev.git .
