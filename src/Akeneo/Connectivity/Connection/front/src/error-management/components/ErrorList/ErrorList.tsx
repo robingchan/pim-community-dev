@@ -31,7 +31,7 @@ const sortingByTimestamp = (sortOrder: Order) => {
 };
 
 const filteringBySearchValue = (searchValue: string) => {
-    return (error: ConnectionError) => new RegExp(searchValue, 'i').test(error.content.message);
+    return (error: ConnectionError) => new RegExp(searchValue, 'i').test(JSON.stringify(error.content));
 };
 
 type Props = {
@@ -70,7 +70,11 @@ const ErrorList: FC<Props> = ({errors}) => {
                         {sortedAndfilteredErrors.map(error => (
                             <TableRow key={error.id}>
                                 <DateTimeCell collapsing>{formatTimestamp(error.timestamp)}</DateTimeCell>
-                                <ErrorMessageCell>{error.content.message}</ErrorMessageCell>
+                                <ErrorMessageCell>
+                                    {JSON.stringify(error.content, undefined, '\t')
+                                        .replace(/* Remove starting '{' and ending '}' */ /^\{\n|\}$/g, '')
+                                        .replace(/* Remove first level indention */ /\t"/g, '"')}
+                                </ErrorMessageCell>
                             </TableRow>
                         ))}
                     </tbody>
@@ -88,6 +92,7 @@ const DateTimeCell = styled(TableCell)`
 
 const ErrorMessageCell = styled(TableCell)`
     color: ${({theme}) => theme.color.red100};
+    white-space: pre-wrap;
 `;
 
 export {ErrorList};
